@@ -4,8 +4,6 @@
 
 # --- set value(s) here --- #
 
-# script directory and script
-
 your_org="YOURORG" # the name of your organization
 com_org="org" # the domain type of your organization (ex. com, org, net)
 name="$com_org.$your_org.net-set" # name of the project with the name of your organization
@@ -13,13 +11,15 @@ script_dir="/usr/local/$your_org/scripts" # the path to wherever your org keeps 
 script="$script_dir/net-set.sh" # the path to the script in your org's script directory
 launchd="/Library/LaunchDaemons/$name.plist" # the path to the launch daemon
 
+# --- do not edit below --- #
+
 # create $script_dir if missing
 
 if [ ! -d "$script_dir" ]; then
   mkdir -p "$script_dir"
 fi
 
-# verify permissions for $script_dir
+# verify permission and ownership for $script_dir
 
 /bin/chmod 755 "$script_dir"
 /usr/sbin/chown root:wheel "$script_dir"
@@ -175,12 +175,12 @@ EOF
 </plist>
 EOF
 
-# launch daemons need specific permissions and ownership
+# verify permissions and ownership for the daemon
 
 /bin/chmod 644 $launchd
 /usr/sbin/chown root:wheel $launchd
 
-# unload the daemon if it is currently active
+# unload the daemon if loaded
 launchctl_check=$(/bin/launchctl list | grep $name)
 
 if [ "$launchctl_check" != "" ]; then
