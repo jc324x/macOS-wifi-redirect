@@ -15,19 +15,23 @@ Set the script values, test thoroughly and then send out with your management to
 choice.
 
 ```bash
-# --- set value(s) here --- #
+# the name of your organization
+your_org="YOURORG" 
 
-your_org="YOURORG" # the name of your organization
+# the domain type of your organization (ex. com, org, net)
+com_org="org" 
 
-com_org="org" # the domain type of your organization (ex. com, org, net)
+# name of the project with the name of your organization
+name="$com_org.$your_org.net-set" 
 
-name="$com_org.$your_org.net-set" # name of the project with the name of your organization
+# the path to wherever your org keeps scripts
+script_dir="/usr/local/$your_org/scripts" 
 
-script_dir="/usr/local/$your_org/scripts" # the path to wherever your org keeps scripts
+# the path to the script within your org's script directory
+script="$script_dir/net-set.sh" 
 
-script="$script_dir/net-set.sh" # the path to the script within your org's script directory
-
-launchd="/Library/LaunchDaemons/$name.plist" # the path to daemon set by this script
+# the path to daemon set by this script
+launchd="/Library/LaunchDaemons/$name.plist" 
 ```
 
 ### Prerequisites
