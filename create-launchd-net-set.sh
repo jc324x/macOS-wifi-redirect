@@ -5,8 +5,6 @@
 
 # --- set value(s) here --- #
 
-# script directory and script
-
 your_org="YOURORG" # the name of your organization
 dom_ext="org" # domain extension for your organization (eg. com, org, net)
 script_dir="/usr/local/$your_org/scripts" # the path to your org's scripts directory
@@ -16,6 +14,8 @@ script_dir="/usr/local/$your_org/scripts" # the path to your org's scripts direc
 name="$dom_ext.$your_org.net-set" # the name of this project, fit to your organization
 launchd="/Library/LaunchDaemons/$name.plist" # the path to the launch daemon
 script="$script_dir/net-set.sh" # the path to the script in your org's script directory
+
+# --- do not edit below --- #
 
 # create $script_dir if missing
 
@@ -199,6 +199,7 @@ EOF
 
 /bin/chmod 644 $launchd
 /usr/sbin/chown root:wheel $launchd
+
 
 # unload the daemon if active
 
