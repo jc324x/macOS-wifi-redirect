@@ -11,29 +11,21 @@ LaunchDaemon and script that will redirect them to safety.
 
 ## Getting Started
 
-Set the script values, test thoroughly and then send out with your management tool of
-choice.
+Open `create-launchd-net-set.sh`, jump to line 10 and set values for `your_org`,
+`dom_ext` and `script_dir`.
 
 ```bash
-# the name of your organization
-your_org="YOURORG" 
-
-# the domain type of your organization (ex. com, org, net)
-com_org="org" 
-
-# name of the project with the name of your organization
-name="$com_org.$your_org.net-set" 
-
-# the path to wherever your org keeps scripts
-script_dir="/usr/local/$your_org/scripts" 
-
-# the path to the script within your org's script directory
-script="$script_dir/net-set.sh" 
-
-# the path to daemon set by this script
-launchd="/Library/LaunchDaemons/$name.plist" 
+your_org="YOURORG" # the name of your organization
+dom_ext="org" # domain extension for your organization (eg. com, org, net)
+script_dir="/usr/local/$your_org/scripts" # the path to your org's scripts directory
 ```
+
+Then jump to line 34, read the comments and set the values for the script that will
+be written to `$script`. The `\` in `cat <<\EOF >` prevents variables from being
+interpreted, so you'll need set the output for `cat`, the value `ssid` and the values
+in `blocked_ssids`.
 
 ### Prerequisites
 
-None.
+There are no prerequisites for this script. Just clone it, configure it, *test it*
+and then send it out to your clients.
