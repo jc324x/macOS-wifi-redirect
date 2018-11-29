@@ -17,9 +17,8 @@ Turning on the AirPort or changing WiFi networks will modify `/Library/Preferenc
 
 2. **Check Current Network**
 
-The script first checks to see if the client device is connected to the target
-network. If the client is already connected, the script verifies that unwanted
-networks are removed from the network service order and then quits.
+The script checks to see if the client is already connected to the target
+network. If so, the script verifies that connections to unwanted networks are removed and then exits.
 
 ```bash
 # --- if $current == $ssid, clean up and exit --- #
@@ -33,6 +32,7 @@ wireless_device=$(/usr/sbin/networksetup -listallhardwareports | /usr/bin/egrep 
 current=$(networksetup -getairportnetwork "$wireless_device" | awk -F ": " '{print $2}')
 
 # if already on "$ssid" verify that unwanted networks are removed, then exit
+
 if [ "$current" == "$ssid" ]; then
   echo "connected to $ssid, verifying that blocked_ssids are removed; exiting"
   removeBlockedSSIDs "${blocked_ssids[@]}"; exit
@@ -52,11 +52,8 @@ function removeBlockedSSIDs() {
 
 3. **Check if Target Network is Known**
 
-If the client isn't already connected to the target network, the script verifies that
-the client has a know connection through `/usr/sbin/networksetup`. If the target
-network is known, it will continue, otherwise it will exit. This is helpful as an
-absolute last resort. If a endpoint has lost it's connection to your network, this at
-least allows you the opportunity to recapture it through an external network.
+`/usr/sbin/networksetup` is used to check for a known connection. If the target network is unknown, the script
+will exit without making changes.
 
 ```bash
 # --- verify that $ssid is known --- #
@@ -81,9 +78,7 @@ fi
 
 4. **Check if Target Network is Available**
 
-The script then checks to see if the target network is in range utilizing the
-`airport` utility, found at
-`/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport`. If the target network is range, the script will move forward.
+`/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport` is used to check if the target network is available. If the network is unavailable, the script will exit without making changes.
 
 ```bash
 # --- verify that $ssid is available --- #
@@ -108,9 +103,9 @@ done
 
 5. **Cleanup**
 
-The target network is in range. System Preferences closed if running, as it
-can cause unintended behavior. Blocked SSIDs are removed, WiFi is toggled off/on
-again and the client device rejoins your network.
+The client is on an auxiliary network and can connect to the target network. System
+Preferences is closed, blocked SSIDs are removed, WiFi is toggled off/on and the
+client rejoins the target network.
 
 ```bash
 # verified that $ssid is available
@@ -166,7 +161,8 @@ script_dir="/usr/local/$your_org/scripts" # the path to your org's scripts direc
 /bin/cat <<\EOF > /usr/local/YOURORG/scripts/net-set.sh
 ```
 
-* Set `ssid` to your organization's wireless network
+* Set `ssid` to your organization's wireless network. This documentation also refers to
+  this as the target network.
 
 ```bash
 ssid="YOURSSIDHERE"

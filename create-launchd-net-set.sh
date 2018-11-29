@@ -98,6 +98,7 @@ wireless_device=$(/usr/sbin/networksetup -listallhardwareports | /usr/bin/egrep 
 current=$(networksetup -getairportnetwork "$wireless_device" | awk -F ": " '{print $2}')
 
 # if already on "$ssid" verify that unwanted networks are removed, then exit
+
 if [ "$current" == "$ssid" ]; then
   echo "connected to $ssid, verifying that blocked_ssids are removed; exiting"
   removeBlockedSSIDs "${blocked_ssids[@]}"; exit
