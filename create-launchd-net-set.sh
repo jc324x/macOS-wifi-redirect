@@ -65,7 +65,8 @@ blocked_ssids=(
 
 function verifySysPrefQuit() {
   if pgrep -f "System Preferences"; then
-    echo "stopping System Preferences"; killall "System Preferences"
+    echo "stopping System Preferences"
+    killall "System Preferences"
   fi
 }
 
@@ -101,7 +102,8 @@ current=$(networksetup -getairportnetwork "$wireless_device" | awk -F ": " '{pri
 
 if [ "$current" == "$ssid" ]; then
   echo "connected to $ssid, verifying that blocked_ssids are removed; exiting"
-  removeBlockedSSIDs "${blocked_ssids[@]}"; exit
+  removeBlockedSSIDs "${blocked_ssids[@]}"
+  exit
 fi
 
 # --- verify that $ssid is known --- #
@@ -120,7 +122,8 @@ do
 done
 
 if [ "$known" != "true" ]; then
-  echo "$ssid isn't a known network; exiting"; exit
+  echo "$ssid isn't a known network; exiting"
+  exit
 fi
 
 # --- verify that $ssid is available --- #
@@ -137,7 +140,7 @@ available_ssids=($("$airport" -s | awk '{print $1}'))
 
 for available_ssid in "${available_ssids[@]}"
 do
-    if [ "$available_ssid" == "$ssid" ] ; then
+    if [ "$available_ssid" == "$ssid" ]; then
         available=true; break
     fi
 done
@@ -145,7 +148,8 @@ done
 # verified that $ssid is available
 
 if [ "$available" != "true" ]; then
-  echo "ssid isn't available; exiting"; exit
+  echo "ssid isn't available; exiting"; 
+  exit
 fi
 
 # verify that System Preferences isn't running
