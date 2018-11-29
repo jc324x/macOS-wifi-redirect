@@ -148,7 +148,7 @@ done
 # verified that $ssid is available
 
 if [ "$available" != "true" ]; then
-  echo "ssid isn't available; exiting"; 
+  echo "ssid isn't available; exiting"
   exit
 fi
 

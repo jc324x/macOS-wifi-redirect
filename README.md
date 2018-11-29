@@ -35,7 +35,8 @@ current=$(networksetup -getairportnetwork "$wireless_device" | awk -F ": " '{pri
 
 if [ "$current" == "$ssid" ]; then
   echo "connected to $ssid, verifying that blocked_ssids are removed; exiting"
-  removeBlockedSSIDs "${blocked_ssids[@]}"; exit
+  removeBlockedSSIDs "${blocked_ssids[@]}"
+  exit
 fi
 ```
 
@@ -72,7 +73,8 @@ do
 done
 
 if [ "$known" != "true" ]; then
-  echo "$ssid isn't a known network; exiting"; exit
+  echo "$ssid isn't a known network; exiting"
+  exit
 fi
 ```
 
@@ -111,7 +113,8 @@ client rejoins the target network.
 # verified that $ssid is available
 
 if [ "$available" != "true" ]; then
-  echo "ssid isn't available; exiting"; exit
+  echo "ssid isn't available; exiting"
+  exit
 fi
 
 # verify that System Preferences isn't running
@@ -142,7 +145,8 @@ fi
 
 function verifySysPrefQuit() {
   if pgrep -f "System Preferences"; then
-    echo "stopping System Preferences"; killall "System Preferences"
+    echo "stopping System Preferences"
+    killall "System Preferences"
   fi
 }
 
