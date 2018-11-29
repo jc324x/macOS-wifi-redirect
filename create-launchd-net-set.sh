@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # author: Jon Christensen, date: 2018-11-20, macOS: 10.14.1, GitHub / Jamf Nation: jychri 
-# note: you will need to explicitly set the values for the cat'ed script
+# note: set values on lines 10-12 as well as 46-ca.58
 
 # --- set value(s) here --- #
 
@@ -27,6 +27,8 @@ fi
 
 /bin/chmod 755 "$script_dir"
 /usr/sbin/chown root:wheel "$script_dir"
+
+# verify $script and permissions
 
 /usr/bin/touch "$script"
 /bin/chmod 755 "$script"

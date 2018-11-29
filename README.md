@@ -1,10 +1,59 @@
 # Net-Set
 
-Creates a LaunchDaemon and a companion script that will redirect Apple laptops and desktops to your organization's wireless network.
+## Synopsis
+
+Creates a LaunchDaemon and script that will automatically redirect macOS devices to
+your organization's wireless network when that network is known and available.
 
 ## Summary
 
-If your macOS devices are connecting to a company guest network or to an unwanted open network broadcasting in range of your organization's WiFi, this script will create a LaunchDaemon and script that will redirect them to safety. The companion script is triggered by changes to `/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist` and will only modify a client's network configuration if the target network is in range and accessible.
+If your Apple laptops and desktops are connecting to a company guest network or to an unwanted open network broadcasting in range of your organization's WiFi, this script will create a LaunchDaemon and script that will redirect them back to your network. The script is triggered by changes to `/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist` and will only modify a client's network configuration if the target network is known and available. 
+
+Known check:
+
+```bash
+# --- verify that $ssid is known --- #
+
+# build array of known ssids
+
+known_ssids=($(networksetup -listpreferredwirelessnetworks "$wireless_device"))
+
+# loop over ssids looking for a match
+
+for known_ssid in "${known_ssids[@]}"
+do
+    if [ "$known_ssid" == "$ssid" ] ; then
+        known=true; break
+    fi
+done
+
+if [ "$known" != "true" ]; then
+  echo "$ssid isn't a known network; exiting"; exit
+fi
+```
+
+Availability check:
+
+```bash
+# --- verify that $ssid is available --- #
+
+# /System/Library isn't in the $PATH
+
+airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+
+# build array of available ssids
+
+available_ssids=($("$airport" -s | awk '{print $1}'))
+
+# loop over ssids looking for a match
+
+for available_ssid in "${available_ssids[@]}"
+do
+    if [ "$available_ssid" == "$ssid" ] ; then
+        available=true; break
+    fi
+done
+```
 
 ## Getting Started
 
