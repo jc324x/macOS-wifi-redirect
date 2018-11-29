@@ -135,6 +135,36 @@ if [ "$current" != "$ssid" ]; then
 fi
 ```
 
+```bash
+# --- function(s) --- #
+
+# quit System Preferences if it's running
+
+function verifySysPrefQuit() {
+  if pgrep -f "System Preferences"; then
+    echo "stopping System Preferences"; killall "System Preferences"
+  fi
+}
+
+# turn the Wifi off and on
+
+function toggleWifi() {
+  networksetup -setairportpower "$wireless_device" off
+  networksetup -setairportpower "$wireless_device" on
+}
+
+# remove every ssid in $blocked_ssids
+
+function removeBlockedSSIDs() {
+  arr="$1"
+  for blocked_ssid in "${arr[@]}"; do
+    /usr/sbin/networksetup -removepreferredwirelessnetwork "$wireless_device" "$blocked_ssid"
+  done 
+}
+
+```
+
+
 ## Getting Started
 
 ##### Jump to line 10.
