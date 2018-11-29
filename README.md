@@ -11,11 +11,11 @@ If your Apple laptops and desktops are connecting to a company guest network or 
 
 ## Workflow
 
-1. Ch-ch-ch-changes
+1. **Startup**
 
 Turning on the AirPort or changing WiFi networks will modify `/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist` and trigger the script.
 
-2. Are you home?
+2. **Check Current Network**
 
 The script first checks to see if the client device is connected to the target
 network. If the client is already connected, the script verifies that unwanted
@@ -50,7 +50,7 @@ function removeBlockedSSIDs() {
 }
 ```
 
-3. Do I know you?
+3. **Check if Target Network is Known**
 
 If the client isn't already connected to the target network, the script verifies that
 the client has a know connection through `/usr/sbin/networksetup`. If the target
@@ -79,7 +79,7 @@ if [ "$known" != "true" ]; then
 fi
 ```
 
-4. Are you free?
+4. **Check if Target Network is Available**
 
 The script then checks to see if the target network is in range utilizing the
 `airport` utility, found at
@@ -106,13 +106,11 @@ do
 done
 ```
 
-5. Cleanup time
+5. **Cleanup**
 
-The target network is in range. System Preferences is verified to be closed, as it
-can cause unintended behavior if it's running in the background while the next
-actions are performed. Blocked SSIDs are removed, WiFi is toggled off and then on
-again and the client rejoins your network.
-
+The target network is in range. System Preferences closed if running, as it
+can cause unintended behavior. Blocked SSIDs are removed, WiFi is toggled off/on
+again and the client device rejoins your network.
 
 ```bash
 # verified that $ssid is available
@@ -140,7 +138,6 @@ current=$(networksetup -getairportnetwork "$wireless_device" | awk -F ": " '{pri
 if [ "$current" != "$ssid" ]; then
   toggleWifi
 fi
-
 ```
 
 ## Getting Started
