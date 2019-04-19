@@ -41,7 +41,7 @@ fi
 # important! set the value for ssid to the network that you are allowing
 
 # important! set the value(s) in blocked_ssids to the ssids that you are blocking
-# eg. YOURORG-GUEST, "LOBBY-COFFEE-WIFI"
+# eg. "YOURORG-GUEST", "LOBBY-COFFEE-WIFI"
 
 /bin/cat <<\EOF > /usr/local/YOURORG/scripts/net-set.sh
 #!/bin/bash
